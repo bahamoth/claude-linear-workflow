@@ -57,6 +57,7 @@ When you try to exit plan mode on `main`, the plugin blocks and guides you to:
 ### 2. Branch Naming
 
 Use Linear's suggested branch name:
+
 ```
 {user}/{prefix}-{id}-{description}
 ```
@@ -66,6 +67,7 @@ Example: `bahamoth/abc-123-add-auth-feature`
 ### 3. Commit Messages
 
 Follow Conventional Commits format:
+
 ```
 feat(scope): add new feature
 
@@ -77,17 +79,18 @@ Valid types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
 ### 4. Pull Requests
 
 Include Linear magic words to auto-close issues:
+
 ```
 Fixes ABC-123
 ```
 
 ## Hooks
 
-| Hook | Trigger | Purpose |
-|------|---------|---------|
-| `pre_implement_check.py` | `ExitPlanMode` | Enforce Linear branch before implementation |
-| `validate_commit_msg.py` | `Bash (git commit)` | Validate Conventional Commits |
-| `record_progress.py` | `Write`, `Edit` | Track file changes |
+| Hook                     | Trigger             | Purpose                                     |
+| ------------------------ | ------------------- | ------------------------------------------- |
+| `pre_implement_check.py` | `ExitPlanMode`      | Enforce Linear branch before implementation |
+| `validate_commit_msg.py` | `Bash (git commit)` | Validate Conventional Commits               |
+| `record_progress.py`     | `Write`, `Edit`     | Track file changes                          |
 
 ## License
 
