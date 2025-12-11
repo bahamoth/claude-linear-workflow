@@ -1,15 +1,16 @@
 ---
 name: linear-workflow
-description: Linear issue-driven development workflow. Auto-activates when starting work on issues, creating branches, changing status, writing comments, or creating PRs.
+description: Linear issue-tracked development workflow. Auto-activates when starting work on issues, creating branches, changing status, writing comments, or creating PRs.
 ---
 
-# Linear-Driven Development Workflow
+# Linear-Tracked Development Workflow
 
 ## Configuration
 
 This skill requires Linear MCP to be configured. On first use, it will:
 
 1. **Check environment variables** in `.claude/settings.json`:
+
    - If `LINEAR_WORKFLOW_TEAM` and `LINEAR_WORKFLOW_PROJECT` exist → use them
    - If not → query Linear MCP and ask user to select
 
@@ -49,6 +50,7 @@ A `PreToolUse` hook on `ExitPlanMode` enforces this workflow:
 - **Allows** if branch contains issue ID pattern (e.g., `abc-7`)
 
 If blocked, you must:
+
 1. Search Linear for similar issues matching your plan
 2. If similar issue exists → ask user which to use
 3. If no match → create new issue from plan
@@ -107,25 +109,30 @@ mcp__linear__create_issue(
 
 ```markdown
 ## Objective
+
 [One sentence describing what this work achieves]
 
 ## Background
+
 - [Why this work is needed]
 - [Context or constraints]
 - [Related prior work or decisions]
 
 ## Implementation Approach
+
 - [High-level approach or strategy]
 - [Key technical decisions]
 - [Files/components to modify]
 
 ## Acceptance Criteria
+
 - [ ] [Specific, testable criterion 1]
 - [ ] [Specific, testable criterion 2]
 - [ ] [Specific, testable criterion 3]
 ```
 
 **Guidelines:**
+
 - **Objective**: Single sentence, action-oriented (e.g., "Add logging infrastructure for LLM debugging")
 - **Background**: 2-4 bullet points explaining why, not how
 - **Implementation Approach**: Technical strategy, not step-by-step instructions
@@ -184,6 +191,7 @@ Write comments for major decisions, progress updates, or blockers.
 **Context**: [why this decision was needed]
 
 **Options considered**:
+
 1. [Option A] - pros/cons
 2. [Option B] - pros/cons
 
@@ -214,14 +222,14 @@ Refs {PREFIX}-XX"
 
 ### Commit Types
 
-| Type | Usage |
-|------|-------|
-| `feat` | New feature |
-| `fix` | Bug fix |
-| `refactor` | Refactoring |
-| `docs` | Documentation |
-| `chore` | Build/config |
-| `test` | Tests |
+| Type       | Usage         |
+| ---------- | ------------- |
+| `feat`     | New feature   |
+| `fix`      | Bug fix       |
+| `refactor` | Refactoring   |
+| `docs`     | Documentation |
+| `chore`    | Build/config  |
+| `test`     | Tests         |
 
 ### Linear Reference Keywords
 
@@ -290,10 +298,10 @@ Linear detects `Fixes {PREFIX}-XX` → auto-closes issue as Done
 
 ## Linear Magic Words Reference
 
-| Keyword | Effect |
-|---------|--------|
-| `closes`, `fixes`, `resolves`, `completes` | Close issue on PR merge |
-| `refs`, `part of`, `related to` | Link only, no status change |
+| Keyword                                    | Effect                      |
+| ------------------------------------------ | --------------------------- |
+| `closes`, `fixes`, `resolves`, `completes` | Close issue on PR merge     |
+| `refs`, `part of`, `related to`            | Link only, no status change |
 
 ---
 

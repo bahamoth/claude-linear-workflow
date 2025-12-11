@@ -1,6 +1,6 @@
 # Linear Workflow Plugin for Claude Code
 
-A Claude Code plugin that enforces Linear issue-driven development workflow with branch naming conventions, Conventional Commits validation, and automatic issue tracking.
+A Claude Code plugin that enforces Linear issue-tracked development workflow with branch naming conventions, Conventional Commits validation, and automatic issue tracking.
 
 ## Features
 
