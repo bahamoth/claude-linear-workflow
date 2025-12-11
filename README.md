@@ -19,10 +19,10 @@ A Claude Code plugin that enforces Linear issue-tracked development workflow wit
 
 ```bash
 # Add marketplace
-/plugin marketplace add bahamoth/claude-linear-workflow
+/plugin marketplace add bahamoth/claude-marketplace
 
 # Install plugin
-/plugin install linear-workflow@bahamoth/claude-linear-workflow
+/plugin install linear-workflow@bahamoth/claude-marketplace
 ```
 
 ## Configuration
