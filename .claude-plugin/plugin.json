@@ -13,5 +13,8 @@
     "git",
     "issues",
     "conventional-commits"
+  ],
+  "skills": [
+    "./skills/linear-workflow"
   ]
 }
