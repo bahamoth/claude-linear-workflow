@@ -13,9 +13,5 @@
     "git",
     "issues",
     "conventional-commits"
-  ],
-  "hooks": "./hooks/hooks.json",
-  "skills": [
-    "./skills/linear-workflow"
   ]
 }
