@@ -9,13 +9,13 @@ description: Linear issue-driven development workflow. Auto-activates when start
 
 This skill requires Linear MCP to be configured. On first use, it will:
 
-1. **Check** `.claude/settings.json` for `linearConfig`:
-   - If `team` and `project` exist → use them
+1. **Check environment variables** in `.claude/settings.json`:
+   - If `LINEAR_WORKFLOW_TEAM` and `LINEAR_WORKFLOW_PROJECT` exist → use them
    - If not → query Linear MCP and ask user to select
 
 2. **Get issue prefix** dynamically:
    ```bash
-   mcp__linear__list_issues(team: "{team}", limit: 1)
+   mcp__linear__list_issues(team: "{LINEAR_WORKFLOW_TEAM}", limit: 1)
    # Extract prefix from identifier (e.g., "ABC-34" → "ABC")
    ```
 
@@ -23,9 +23,9 @@ This skill requires Linear MCP to be configured. On first use, it will:
 
 ```json
 {
-  "linearConfig": {
-    "team": "YourTeam",
-    "project": "YourProject"
+  "env": {
+    "LINEAR_WORKFLOW_TEAM": "YourTeam",
+    "LINEAR_WORKFLOW_PROJECT": "YourProject"
   }
 }
 ```
@@ -98,8 +98,8 @@ After planning, before implementation, create Linear issue using this template:
 mcp__linear__create_issue(
   title: "Concise work title",
   description: "<issue description template below>",
-  team: "{team}",
-  project: "{project}"
+  team: "{LINEAR_WORKFLOW_TEAM}",
+  project: "{LINEAR_WORKFLOW_PROJECT}"
 )
 ```
 
