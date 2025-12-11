@@ -7,6 +7,15 @@
   },
   "homepage": "https://github.com/bahamoth/claude-linear-workflow",
   "license": "MIT",
-  "keywords": ["linear", "workflow", "git", "issues", "conventional-commits"],
-  "hooks": "./hooks/hooks.json"
+  "keywords": [
+    "linear",
+    "workflow",
+    "git",
+    "issues",
+    "conventional-commits"
+  ],
+  "hooks": "./hooks/hooks.json",
+  "skills": [
+    "./skills/linear-workflow"
+  ]
 }
