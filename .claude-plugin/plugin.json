@@ -1,0 +1,12 @@
+{
+  "name": "linear-workflow",
+  "version": "1.0.0",
+  "description": "Linear issue-driven development workflow for Claude Code. Enforces branch naming, commit conventions, and Linear issue tracking.",
+  "author": {
+    "name": "bahamoth"
+  },
+  "homepage": "https://github.com/bahamoth/claude-linear-workflow",
+  "license": "MIT",
+  "keywords": ["linear", "workflow", "git", "issues", "conventional-commits"],
+  "hooks": "./hooks/hooks.json"
+}
