@@ -1,10 +1,13 @@
 {
   "name": "claude-linear-workflow",
-  "owner": "bahamoth",
+  "owner": {
+    "name": "bahamoth"
+  },
   "plugins": [
     {
       "name": "linear-workflow",
-      "source": "."
+      "source": ".",
+      "description": "Linear issue-driven development workflow"
     }
   ]
 }
