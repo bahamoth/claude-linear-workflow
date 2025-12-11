@@ -1,8 +1,10 @@
 {
+  "name": "claude-linear-workflow",
+  "owner": "bahamoth",
   "plugins": [
     {
       "name": "linear-workflow",
-      "path": "."
+      "source": "."
     }
   ]
 }
