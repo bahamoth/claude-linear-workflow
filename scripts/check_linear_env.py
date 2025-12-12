@@ -31,25 +31,26 @@ def main() -> None:
     configured, missing = check_linear_config()
 
     if not configured:
-        # Output as hookSpecificOutput for Claude to see
+        warning_message = (
+            "⚠️ Linear workflow environment not configured.\n\n"
+            f"Missing: {', '.join(missing)}\n\n"
+            "To enable Linear-tracked development, add to .claude/settings.json:\n"
+            '{\n'
+            '  "env": {\n'
+            '    "LINEAR_WORKFLOW_TEAM": "YourTeam",\n'
+            '    "LINEAR_WORKFLOW_PROJECT": "YourProject"\n'
+            '  }\n'
+            '}\n\n'
+            "Use Linear MCP to find your team/project:\n"
+            "  mcp__linear__list_teams()\n"
+            "  mcp__linear__list_projects(teamId: ...)"
+        )
         output = {
+            "systemMessage": warning_message,
             "hookSpecificOutput": {
                 "hookEventName": "UserPromptSubmit",
                 "linearWorkflowWarning": True,
-                "message": (
-                    "Linear workflow environment not configured.\n\n"
-                    f"Missing: {', '.join(missing)}\n\n"
-                    "To enable Linear-tracked development, add to .claude/settings.json:\n"
-                    '{\n'
-                    '  "env": {\n'
-                    '    "LINEAR_WORKFLOW_TEAM": "YourTeam",\n'
-                    '    "LINEAR_WORKFLOW_PROJECT": "YourProject"\n'
-                    '  }\n'
-                    '}\n\n'
-                    "Use Linear MCP to find your team/project:\n"
-                    "  mcp__linear__list_teams()\n"
-                    "  mcp__linear__list_projects(teamId: ...)"
-                ),
+                "missingVars": missing,
             }
         }
         print(json.dumps(output))
