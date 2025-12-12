@@ -224,11 +224,11 @@ Refs {PREFIX}-XX"
 
 **SemVer-relevant (required for versioning):**
 
-| Type   | Usage       | SemVer Impact |
-| ------ | ----------- | ------------- |
-| `feat` | New feature | MINOR bump    |
-| `fix`  | Bug fix     | PATCH bump    |
-| !      | Breaking change (e.g., feat!:) | MAJOR bump |
+| Type     | Usage                          | SemVer Impact |
+| -------- | ------------------------------ | ------------- |
+| `feat`   | New feature                    | MINOR bump    |
+| `fix`    | Bug fix                        | PATCH bump    |
+| `feat!:` | Breaking change (add ! suffix) | MAJOR bump    |
 
 **Other common types:**
 
