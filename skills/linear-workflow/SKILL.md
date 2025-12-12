@@ -228,7 +228,7 @@ Refs {PREFIX}-XX"
 | ------ | ----------- | ------------- |
 | `feat` | New feature | MINOR bump    |
 | `fix`  | Bug fix     | PATCH bump    |
-| `!`    | Breaking change (e.g., `feat!:`) | MAJOR bump |
+| !      | Breaking change (e.g., feat!:) | MAJOR bump |
 
 **Other common types:**
 
