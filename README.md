@@ -86,11 +86,12 @@ Fixes ABC-123
 
 ## Hooks
 
-| Hook                     | Trigger             | Purpose                                     |
-| ------------------------ | ------------------- | ------------------------------------------- |
-| `pre_implement_check.py` | `ExitPlanMode`      | Enforce Linear branch before implementation |
-| `validate_commit_msg.py` | `Bash (git commit)` | Validate Conventional Commits               |
-| `record_progress.py`     | `Write`, `Edit`     | Track file changes                          |
+| Hook                     | Trigger              | Purpose                                     |
+| ------------------------ | -------------------- | ------------------------------------------- |
+| `check_linear_env.py`    | `UserPromptSubmit`   | Early warning if env not configured         |
+| `pre_implement_check.py` | `ExitPlanMode`       | Enforce Linear branch before implementation |
+| `validate_commit_msg.py` | `Bash (git commit)`  | Validate Conventional Commits               |
+| `record_progress.py`     | `Write`, `Edit`      | Track file changes                          |
 
 ## License
 

@@ -5,6 +5,18 @@ description: Linear issue-tracked development workflow. Auto-activates when star
 
 # Linear-Tracked Development Workflow
 
+## First-Run Configuration Check
+
+**IMPORTANT**: On skill activation, immediately verify environment setup:
+
+```
+1. Check if LINEAR_WORKFLOW_TEAM and LINEAR_WORKFLOW_PROJECT exist in environment
+2. If missing → STOP and guide user to configure before proceeding
+3. If configured → continue with workflow
+```
+
+This check happens automatically via `UserPromptSubmit` hook, but Claude should also verify before any Linear operations.
+
 ## Configuration
 
 This skill requires Linear MCP to be configured. On first use:
@@ -12,7 +24,7 @@ This skill requires Linear MCP to be configured. On first use:
 1. **Check environment variables** in `.claude/settings.json`:
 
    - If `LINEAR_WORKFLOW_TEAM` and `LINEAR_WORKFLOW_PROJECT` exist → use them
-   - If not → hook blocks implementation and guides you to set them up
+   - If not → guide user to set them up before proceeding
 
 2. **Get issue prefix** dynamically:
    ```bash
