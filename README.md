@@ -31,14 +31,14 @@ Add your Linear team and project to `.claude/settings.json`:
 
 ```json
 {
-  "linearConfig": {
-    "team": "YourTeam",
-    "project": "YourProject"
+  "env": {
+    "LINEAR_WORKFLOW_TEAM": "YourTeam",
+    "LINEAR_WORKFLOW_PROJECT": "YourProject"
   }
 }
 ```
 
-If no config exists, Claude will interactively query Linear to help you set it up.
+If no config exists, the plugin will block implementation and guide you to set it up.
 
 ## Workflow
 
@@ -69,12 +69,12 @@ Example: `bahamoth/abc-123-add-auth-feature`
 Follow Conventional Commits format:
 
 ```
-feat(scope): add new feature
+type(scope): description
 
 Refs ABC-123
 ```
 
-Valid types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `build`, `revert`
+Format: `type(scope): description` where type is any lowercase word (commonly `feat`, `fix`, `docs`, `refactor`, etc.)
 
 ### 4. Pull Requests
 

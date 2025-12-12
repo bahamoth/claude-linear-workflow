@@ -7,12 +7,12 @@ description: Linear issue-tracked development workflow. Auto-activates when star
 
 ## Configuration
 
-This skill requires Linear MCP to be configured. On first use, it will:
+This skill requires Linear MCP to be configured. On first use:
 
 1. **Check environment variables** in `.claude/settings.json`:
 
    - If `LINEAR_WORKFLOW_TEAM` and `LINEAR_WORKFLOW_PROJECT` exist → use them
-   - If not → query Linear MCP and ask user to select
+   - If not → hook blocks implementation and guides you to set them up
 
 2. **Get issue prefix** dynamically:
    ```bash
@@ -222,14 +222,17 @@ Refs {PREFIX}-XX"
 
 ### Commit Types
 
-| Type       | Usage         |
-| ---------- | ------------- |
-| `feat`     | New feature   |
-| `fix`      | Bug fix       |
-| `refactor` | Refactoring   |
-| `docs`     | Documentation |
-| `chore`    | Build/config  |
-| `test`     | Tests         |
+**SemVer-relevant (required for versioning):**
+
+| Type   | Usage       | SemVer Impact |
+| ------ | ----------- | ------------- |
+| `feat` | New feature | MINOR bump    |
+| `fix`  | Bug fix     | PATCH bump    |
+| `!`    | Breaking change (e.g., `feat!:`) | MAJOR bump |
+
+**Other common types:**
+
+`docs`, `refactor`, `test`, `chore`, `style`, `perf`, `ci`, `build`, `revert`, or any lowercase word that fits the change.
 
 ### Linear Reference Keywords
 

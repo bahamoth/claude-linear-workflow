@@ -15,23 +15,10 @@ import json
 import re
 import sys
 
-COMMIT_TYPES = [
-    "feat",
-    "fix",
-    "docs",
-    "style",
-    "refactor",
-    "perf",
-    "test",
-    "chore",
-    "ci",
-    "build",
-    "revert",
-]
-
 # Pattern: type(optional-scope)?!?: message
+# Conventional Commits spec allows any type (lowercase alphanumeric)
 PATTERN = re.compile(
-    r"^(" + "|".join(COMMIT_TYPES) + r")"  # type
+    r"^[a-z]+"  # type (any lowercase word)
     r"(\([^)]+\))?"  # optional (scope)
     r"!?"  # optional ! for breaking
     r": "  # colon + space
@@ -62,7 +49,6 @@ def extract_commit_message(command: str) -> str | None:
 
 def block_with_guidance(message: str, reason: str) -> None:
     """Block commit with format guidance."""
-    types_str = ", ".join(COMMIT_TYPES)
     guidance = f"""Invalid commit message format.
 
 **Your message**: {message}
@@ -76,8 +62,6 @@ type(scope): description
 
 [optional footer(s)]
 ```
-
-**Valid types**: {types_str}
 
 **Examples**:
 - feat: add new feature
@@ -127,8 +111,8 @@ def main() -> None:
     # Validate format
     if not PATTERN.match(message):
         # Determine specific issue
-        if not any(message.startswith(t) for t in COMMIT_TYPES):
-            reason = f"Missing or invalid type. Must start with one of: {', '.join(COMMIT_TYPES)}"
+        if not re.match(r"^[a-z]+", message):
+            reason = "Must start with a lowercase type (e.g., feat, fix, docs)"
         elif ": " not in message:
             reason = "Missing ': ' (colon followed by space) after type/scope"
         elif message.split(": ", 1)[1].strip() == "":

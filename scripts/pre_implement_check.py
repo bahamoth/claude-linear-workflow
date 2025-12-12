@@ -11,9 +11,25 @@ Exit codes (Claude Code convention):
 - 0 + no JSON or permissionDecision: "allow" → Allow
 """
 import json
+import os
 import re
 import subprocess
 import sys
+
+
+def check_linear_config() -> tuple[bool, str]:
+    """Check if Linear workflow environment variables are configured."""
+    team = os.environ.get("LINEAR_WORKFLOW_TEAM")
+    project = os.environ.get("LINEAR_WORKFLOW_PROJECT")
+
+    if not team or not project:
+        missing = []
+        if not team:
+            missing.append("LINEAR_WORKFLOW_TEAM")
+        if not project:
+            missing.append("LINEAR_WORKFLOW_PROJECT")
+        return False, f"Missing: {', '.join(missing)}"
+    return True, ""
 
 
 def get_current_branch() -> str:
@@ -50,6 +66,24 @@ def block_with_reason(reason: str) -> None:
 
 
 def main() -> None:
+    # Check Linear config first
+    configured, missing = check_linear_config()
+    if not configured:
+        block_with_reason(
+            f"Linear workflow not configured.\n\n"
+            f"{missing}\n\n"
+            "Add to .claude/settings.json:\n"
+            '{\n'
+            '  "env": {\n'
+            '    "LINEAR_WORKFLOW_TEAM": "YourTeam",\n'
+            '    "LINEAR_WORKFLOW_PROJECT": "YourProject"\n'
+            '  }\n'
+            '}\n\n'
+            "Or use Linear MCP to find your team/project names:\n"
+            "  mcp__linear__list_teams()\n"
+            "  mcp__linear__list_projects(teamId: ...)"
+        )
+
     branch = get_current_branch()
 
     # Allow if branch has issue ID
