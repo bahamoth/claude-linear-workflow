@@ -4,25 +4,32 @@ A Claude Code plugin that enforces Linear issue-tracked development workflow wit
 
 ## Features
 
-- **Branch enforcement**: Blocks implementation on `main`/`master` without a Linear issue
+- **Branch enforcement**: Blocks implementation without a Linear issue and related branch
 - **Commit validation**: Enforces Conventional Commits format
-- **Workflow guidance**: Auto-activates skill when working with Linear issues
-- **Progress tracking**: Records file modifications for session summaries
+- **Seamless Linear sync**: Works with existing issues or creates new ones on the fly-either way, Linear stays in sync
+- **Consistent shared context with Linear issue tracking**: Logs progress to Linear issue comments - one source of truth across sessions and teammates
 
 ## Prerequisites
 
 - [Claude Code](https://claude.com/claude-code) CLI
-- [Linear MCP](https://github.com/jerhadf/linear-mcp) configured in Claude Code
+- [GitHub + Linear integration](https://linear.app/docs/github-integration) - enables PR auto-linking and issue status sync on merge
 - Git repository
 
 ## Installation
 
 ```bash
-# Add marketplace
+# 1. Add marketplace
 /plugin marketplace add bahamoth/claude-marketplace
+# Or host your own marketplace - see https://code.claude.com/docs/en/plugin-marketplaces
 
-# Install plugin
+# 2. Install plugin
 /plugin install linear-workflow@bahamoth/claude-marketplace
+
+# 3. Enable plugin
+/plugin enable linear-workflow
+
+# 4. Authenticate Linear MCP (opens browser for OAuth)
+/mcp linear-mcp auth
 ```
 
 ## Configuration
@@ -40,10 +47,25 @@ Add your Linear team and project to `.claude/settings.json`:
 
 If no config exists, the plugin will block implementation and guide you to set it up.
 
-## Workflow
+## Workflow Overview
 
 ```
-Plan Mode → Create/Find Issue → Create Branch → Work → PR → Merge
+Has Issue                    No Issue
+    │                            │
+    ▼                            ▼
+Query via MCP          Plan → Create Issue in Linear
+    │                            │
+    └──────────┬─────────────────┘
+               ▼
+    Create branch (use gitBranchName)
+               ▼
+    Linear status: In Progress + start comment
+               ▼
+    Work (comment on decisions/blockers)
+               ▼
+    Create PR (Fixes {PREFIX}-XX)
+               ▼
+    Merge (rebase-ff) → Linear auto-Done
 ```
 
 ### 1. Starting Work
@@ -86,12 +108,12 @@ Fixes ABC-123
 
 ## Hooks
 
-| Hook                     | Trigger              | Purpose                                     |
-| ------------------------ | -------------------- | ------------------------------------------- |
-| `check_linear_env.py`    | `UserPromptSubmit`   | Early warning if env not configured         |
-| `pre_implement_check.py` | `ExitPlanMode`       | Enforce Linear branch before implementation |
-| `validate_commit_msg.py` | `Bash (git commit)`  | Validate Conventional Commits               |
-| `record_progress.py`     | `Write`, `Edit`      | Track file changes                          |
+| Hook                     | Trigger             | Purpose                                     |
+| ------------------------ | ------------------- | ------------------------------------------- |
+| `check_linear_env.py`    | `UserPromptSubmit`  | Early warning if env not configured         |
+| `pre_implement_check.py` | `ExitPlanMode`      | Enforce Linear branch before implementation |
+| `validate_commit_msg.py` | `Bash (git commit)` | Validate Conventional Commits               |
+| `record_progress.py`     | `Write`, `Edit`     | Track file changes                          |
 
 ## License
 
