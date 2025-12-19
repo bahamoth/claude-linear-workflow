@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/bahamoth/claude-linear-workflow/compare/v1.1.0...v1.2.0) (2025-12-19)
+
+
+### Features
+
+* add PreToolUse hook for Write|Edit with session caching ([0e264f3](https://github.com/bahamoth/claude-linear-workflow/commit/0e264f3262da9ea083207a3758520504ce86a51f))
+
 ## [1.1.0](https://github.com/bahamoth/claude-linear-workflow/compare/v1.0.0...v1.1.0) (2025-12-15)
 
 
