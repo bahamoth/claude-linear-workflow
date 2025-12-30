@@ -5,17 +5,27 @@ description: Linear issue-tracked development workflow. Auto-activates when star
 
 # Linear-Tracked Development Workflow
 
-## First-Run Configuration Check
+## Prerequisites
 
-**IMPORTANT**: On skill activation, immediately verify environment setup:
+**Linear MCP**: Configure in MCP settings:
 
+```json
+{
+  "mcpServers": {
+    "linear": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/linear-mcp"]
+    }
+  }
+}
 ```
-1. Check if LINEAR_WORKFLOW_TEAM and LINEAR_WORKFLOW_PROJECT exist in environment
-2. If missing → STOP and guide user to configure before proceeding
-3. If configured → continue with workflow
-```
 
-This check happens automatically via `UserPromptSubmit` hook, but Claude should also verify before any Linear operations.
+**gh CLI**: Install and authenticate:
+
+```bash
+brew install gh  # or: https://cli.github.com/
+gh auth login
+```
 
 ## Configuration
 
@@ -53,21 +63,6 @@ This skill requires Linear MCP to be configured. On first use:
 - Mentioning a Linear issue ({PREFIX}-XX)
 - After planning, before implementation
 - Creating a PR
-
-## Hook Enforcement
-
-A `PreToolUse` hook on `ExitPlanMode` enforces this workflow:
-
-- **Blocks** implementation on `main`/`master` branch
-- **Allows** if branch contains issue ID pattern (e.g., `abc-7`)
-
-If blocked, you must:
-
-1. Search Linear for similar issues matching your plan
-2. If similar issue exists → ask user which to use
-3. If no match → create new issue from plan
-4. Create branch using `gitBranchName` from issue
-5. Then exit plan mode again
 
 ## Workflow Overview
 
@@ -320,24 +315,27 @@ Linear detects `Fixes {PREFIX}-XX` → auto-closes issue as Done
 
 ---
 
-## Checklist
+## Workflow Checklist
 
-### When Starting Work
+Copy this checklist and check off items as you complete them:
 
+```
+Linear Workflow Progress:
+
+Starting Work:
 - [ ] Check if issue exists (create if not)
 - [ ] Create branch using `gitBranchName`
 - [ ] Status → In Progress
 - [ ] Write start comment
 
-### During Work
-
+During Work:
 - [ ] Comment on major decisions/blockers
 - [ ] Follow Conventional Commits
 - [ ] Include `Refs {PREFIX}-XX` in commits
 
-### On Completion
-
+On Completion:
 - [ ] Create PR (include `Fixes {PREFIX}-XX`)
 - [ ] Request code review
 - [ ] Merge (rebase-ff)
 - [ ] Verify Linear auto-Done
+```

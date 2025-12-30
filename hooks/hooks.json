@@ -12,20 +12,20 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Write|Edit",
+        "matcher": "Write|Edit|ExitPlanMode",
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/ensure_linear_branch.py\""
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/check_linear_env.py\""
           }
         ]
       },
       {
-        "matcher": "ExitPlanMode",
+        "matcher": "Write|Edit|ExitPlanMode",
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/pre_implement_check.py\""
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/ensure_linear_branch.py\""
           }
         ]
       },
@@ -39,23 +39,12 @@
         ]
       }
     ],
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/record_progress.py\""
-          }
-        ]
-      }
-    ],
     "PreCompact": [
       {
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Pre-Compact Linear Progress Sync:\n\n1. Extract issue ID from branch name (pattern: [a-z]+-\\d+, e.g., ABC-123, proj-42)\n2. Read .claude/progress/*.jsonl files\n3. Summarize key changes (focus on source code, exclude config/docs)\n4. Post comment via mcp__linear__create_comment\n5. Delete progress files after sync\n\nSummary format:\n## Progress (Pre-Compact)\n- [Completed work]\n- [Key files: file1, file2, ...]\n\nSkip if no issue ID in branch or no progress files exist."
+            "prompt": "Pre-Compact: Sync progress to Linear\n\n1. Extract issue ID from branch name (pattern: [a-z]+-\\d+)\n2. Summarize work done in this session\n3. Post comment via mcp__linear__create_comment\n\nSkip if no issue ID in branch."
           }
         ]
       }

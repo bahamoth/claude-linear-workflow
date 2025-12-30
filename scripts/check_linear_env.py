@@ -1,20 +1,45 @@
 #!/usr/bin/env python3
 """
-Hook: Check Linear workflow environment on skill activation.
-Runs on: UserPromptSubmit (first user message)
+Hook: Check Linear workflow environment configuration.
+Runs on: UserPromptSubmit, PreToolUse (Write|Edit|ExitPlanMode)
 
-Validates LINEAR_WORKFLOW_TEAM and LINEAR_WORKFLOW_PROJECT are configured
-before the workflow begins, providing early feedback.
+Validates LINEAR_WORKFLOW_TEAM and LINEAR_WORKFLOW_PROJECT are configured.
+Uses session caching to warn only once per session.
 
 Exit codes:
 - 0: Always allow (this is advisory, not blocking)
 
 Output:
-- Prints warning message if env vars are missing
+- Prints warning message if env vars are missing (once per session)
 """
 import json
 import os
 import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+
+def get_session_state_path(cwd: str, session_id: str) -> Path:
+    """Get session state file path for env check."""
+    return Path(cwd) / ".claude" / f"linear-env-warned-{session_id}.json"
+
+
+def load_session_state(state_path: Path) -> dict | None:
+    """Load existing session state if valid."""
+    if not state_path.exists():
+        return None
+    try:
+        with open(state_path) as f:
+            return json.load(f)
+    except (json.JSONDecodeError, IOError):
+        return None
+
+
+def save_session_state(state_path: Path, state: dict) -> None:
+    """Save session state."""
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(state_path, "w") as f:
+        json.dump(state, f)
 
 
 def check_linear_config() -> tuple[bool, list[str]]:
@@ -28,6 +53,22 @@ def check_linear_config() -> tuple[bool, list[str]]:
 
 
 def main() -> None:
+    # Parse input for session info
+    try:
+        hook_input = json.load(sys.stdin)
+    except json.JSONDecodeError:
+        hook_input = {}
+
+    session_id = hook_input.get("session_id", "unknown")
+    cwd = hook_input.get("cwd", os.getcwd())
+
+    # Check if already warned this session
+    state_path = get_session_state_path(cwd, session_id)
+    state = load_session_state(state_path)
+    if state and state.get("warned"):
+        # Already warned this session -> skip
+        sys.exit(0)
+
     configured, missing = check_linear_config()
 
     if not configured:
@@ -48,12 +89,22 @@ def main() -> None:
         output = {
             "systemMessage": warning_message,
             "hookSpecificOutput": {
-                "hookEventName": "UserPromptSubmit",
+                "hookEventName": "PreToolUse",
                 "linearWorkflowWarning": True,
                 "missingVars": missing,
             }
         }
         print(json.dumps(output))
+
+        # Save state to avoid warning again this session
+        save_session_state(
+            state_path,
+            {
+                "warned": True,
+                "missing": missing,
+                "warned_at": datetime.now(timezone.utc).isoformat(),
+            },
+        )
 
     # Always exit 0 - this is advisory, not blocking
     sys.exit(0)
