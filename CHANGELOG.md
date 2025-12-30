@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/bahamoth/claude-linear-workflow/compare/v1.2.0...v1.2.1) (2025-12-30)
+
+
+### Code Refactoring
+
+* overhaul Linear hooks with session caching and remove scripts ([3838873](https://github.com/bahamoth/claude-linear-workflow/commit/3838873ed633b3144877b4b0bda00495880b6f06))
+
 ## [1.2.0](https://github.com/bahamoth/claude-linear-workflow/compare/v1.1.0...v1.2.0) (2025-12-19)
 
 
