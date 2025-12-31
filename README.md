@@ -108,12 +108,13 @@ Fixes ABC-123
 
 ## Hooks
 
-| Hook                       | Trigger                     | Purpose                                     |
-| -------------------------- | --------------------------- | ------------------------------------------- |
-| `check_linear_env.py`      | `UserPromptSubmit`          | Early warning if env not configured         |
-| `ensure_linear_branch.py`  | `Write`, `Edit`, `ExitPlanMode` | Enforce Linear branch before implementation |
-| `validate_commit_msg.py`   | `Bash (git commit)`         | Validate Conventional Commits               |
-| PreCompact prompt          | `PreCompact`                | Sync progress to Linear comments            |
+| Hook | Event | Matcher | Purpose |
+| ---- | ----- | ------- | ------- |
+| `check_linear_env.py` | `UserPromptSubmit` | - | Early warning if env not configured |
+| `check_linear_env.py` | `PreToolUse` | `Write\|Edit\|ExitPlanMode` | Re-check env before implementation |
+| `ensure_linear_branch.py` | `PreToolUse` | `Write\|Edit\|ExitPlanMode` | Enforce Linear branch before changes |
+| `validate_commit_msg.py` | `PreToolUse` | `Bash` | Validate Conventional Commits |
+| Prompt | `PreCompact` | - | Sync progress to Linear comments |
 
 ## License
 
