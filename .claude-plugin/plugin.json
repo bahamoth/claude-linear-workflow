@@ -1,6 +1,6 @@
 {
   "name": "linear-workflow",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Linear issue-tracked development workflow for Claude Code. Enforces branch naming, commit conventions, and Linear issue tracking.",
   "author": {
     "name": "bahamoth"
