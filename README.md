@@ -78,13 +78,13 @@ When you try to exit plan mode on `main`, the plugin blocks and guides you to:
 
 ### 2. Branch Naming
 
-Use Linear's suggested branch name:
+Use the `gitBranchName` field from the Linear issue:
 
-```
-{user}/{prefix}-{id}-{description}
+```bash
+git checkout -b <gitBranchName>
 ```
 
-Example: `bahamoth/abc-123-add-auth-feature`
+Branch format is configured in Linear: **Settings > Workspace > Integrations > Branch format**
 
 ### 3. Commit Messages
 

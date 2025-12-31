@@ -161,15 +161,30 @@ mcp__linear-server__create_issue(
 
 ## 2. Create Branch
 
-Use Linear's `gitBranchName` field as-is:
+Use the `gitBranchName` field from the Linear issue directly:
 
 ```bash
-git checkout -b {user}/{PREFIX}-XX-short-description
+# Get issue details (gitBranchName is included in response)
+mcp__linear-server__get_issue(id: "{PREFIX}-XX")
+
+# Create branch using gitBranchName value
+git checkout -b <gitBranchName>
 ```
 
-Pattern: `{user}/{PREFIX}-XX-{short-description}`
+> **Branch Format**: Configured in Linear at **Settings > Workspace > Integrations > GitHub/GitLab > Branch format**. The `gitBranchName` field reflects your team's configured format.
 
-> **Note**: `{user}` is your **Linear username** (should match your GitHub username).
+### Branch Validation
+
+This workflow validates branch names loosely—only requiring a Linear issue ID (e.g., `ABC-123`). This allows teams to use any branch format configured in Linear:
+
+| Branch Example | Valid? |
+|----------------|--------|
+| `feature/ABC-123-auth` | Yes |
+| `john/ABC-123-auth` | Yes |
+| `ABC-123-auth` | Yes |
+| `ABC-123` | Yes |
+| `main` | No (protected) |
+| `feature/auth` | No (no issue ID) |
 
 ---
 
@@ -179,10 +194,10 @@ Pattern: `{user}/{PREFIX}-XX-{short-description}`
 # Update status
 mcp__linear-server__update_issue(id: "{PREFIX}-XX", state: "In Progress")
 
-# Start comment
+# Start comment (use actual branch name)
 mcp__linear-server__create_comment(
   issueId: "{PREFIX}-XX",
-  body: "## Started\n\n- Branch: `{user}/{PREFIX}-XX-...`\n- Implementing ..."
+  body: "## Started\n\n- Branch: `<branch-name>`\n- Implementing ..."
 )
 ```
 
