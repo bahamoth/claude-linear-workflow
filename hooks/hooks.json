@@ -44,7 +44,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Pre-Compact: Sync progress to Linear\n\n1. Extract issue ID from branch name (pattern: [a-z]+-\\d+)\n2. Summarize work done in this session\n3. Post comment via mcp__linear__create_comment\n\nSkip if no issue ID in branch."
+            "prompt": "Pre-Compact: Sync progress to Linear\n\n1. Extract issue ID from branch name (pattern: [a-z]+-\\d+)\n2. Summarize work done in this session\n3. Post comment via mcp__linear-server__create_comment\n\nSkip if no issue ID in branch."
           }
         ]
       }

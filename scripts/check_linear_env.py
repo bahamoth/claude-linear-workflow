@@ -83,8 +83,8 @@ def main() -> None:
             '  }\n'
             '}\n\n'
             "Use Linear MCP to find your team/project:\n"
-            "  mcp__linear__list_teams()\n"
-            "  mcp__linear__list_projects(teamId: ...)"
+            "  mcp__linear-server__list_teams()\n"
+            "  mcp__linear-server__list_projects(teamId: ...)"
         )
         output = {
             "systemMessage": warning_message,

@@ -13,8 +13,8 @@ description: Linear issue-tracked development workflow. Auto-activates when star
 {
   "mcpServers": {
     "linear": {
-      "command": "npx",
-      "args": ["-y", "@anthropic/linear-mcp"]
+      "command": "mcp-remote",
+      "args": ["-y", "https://mcp.linear.app/mcp"]
     }
   }
 }
@@ -38,7 +38,7 @@ This skill requires Linear MCP to be configured. On first use:
 
 2. **Get issue prefix** dynamically:
    ```bash
-   mcp__linear__list_issues(team: "{LINEAR_WORKFLOW_TEAM}", limit: 1)
+   mcp__linear-server__list_issues(team: "{LINEAR_WORKFLOW_TEAM}", limit: 1)
    # Extract prefix from identifier (e.g., "ABC-34" → "ABC")
    ```
 
@@ -60,9 +60,10 @@ This skill requires Linear MCP to be configured. On first use:
 ## Auto-Activation Triggers
 
 - Starting code implementation
-- Mentioning a Linear issue ({PREFIX}-XX)
-- After planning, before implementation
-- Creating a PR
+- File modifications on main/master without issue branch
+- Mentioning a Linear issue ({PREFIX}-XX) in conversation
+- Creating commits with Conventional Commits format
+- Creating a PR with `Fixes {PREFIX}-XX`
 
 ## Workflow Overview
 
@@ -87,13 +88,24 @@ Query via MCP          Plan → Create Issue in Linear
 
 ---
 
+## Quick Reference
+
+| Action | Command |
+|--------|---------|
+| Get issue | `mcp__linear-server__get_issue(id: "{PREFIX}-XX")` |
+| Update status | `mcp__linear-server__update_issue(id: "{PREFIX}-XX", state: "In Progress")` |
+| Add comment | `mcp__linear-server__create_comment(issueId: "{PREFIX}-XX", body: "...")` |
+| Create issue | `mcp__linear-server__create_issue(title: "...", team: "{TEAM}", project: "{PROJECT}")` |
+
+---
+
 ## 1. Check or Create Issue
 
 ### Case A: Starting with Existing Issue
 
 ```bash
 # Query issue via MCP
-mcp__linear__get_issue(id: "{PREFIX}-XX")
+mcp__linear-server__get_issue(id: "{PREFIX}-XX")
 ```
 
 - Use `gitBranchName` field as branch name
@@ -104,7 +116,7 @@ mcp__linear__get_issue(id: "{PREFIX}-XX")
 After planning, before implementation, create Linear issue using this template:
 
 ```bash
-mcp__linear__create_issue(
+mcp__linear-server__create_issue(
   title: "Concise work title",
   description: "<issue description template below>",
   team: "{LINEAR_WORKFLOW_TEAM}",
@@ -152,10 +164,12 @@ mcp__linear__create_issue(
 Use Linear's `gitBranchName` field as-is:
 
 ```bash
-git checkout -b {user}/{prefix}-XX-short-description
+git checkout -b {user}/{PREFIX}-XX-short-description
 ```
 
-Pattern: `{user}/{issue-id}-{short-description}`
+Pattern: `{user}/{PREFIX}-XX-{short-description}`
+
+> **Note**: `{user}` is your **Linear username** (should match your GitHub username).
 
 ---
 
@@ -163,14 +177,26 @@ Pattern: `{user}/{issue-id}-{short-description}`
 
 ```bash
 # Update status
-mcp__linear__update_issue(id: "{PREFIX}-XX", state: "In Progress")
+mcp__linear-server__update_issue(id: "{PREFIX}-XX", state: "In Progress")
 
 # Start comment
-mcp__linear__create_comment(
+mcp__linear-server__create_comment(
   issueId: "{PREFIX}-XX",
-  body: "## Started\n\n- Branch: `{user}/{prefix}-XX-...`\n- Implementing ..."
+  body: "## Started\n\n- Branch: `{user}/{PREFIX}-XX-...`\n- Implementing ..."
 )
 ```
+
+---
+
+## Linear Status Transitions
+
+| Status | When to Use | Transition |
+|--------|-------------|------------|
+| Backlog | Initial state, not yet prioritized | Auto |
+| Todo | Ready for work | Manual |
+| In Progress | Actively working | Set at branch creation |
+| In Review | PR created, awaiting review | Set at PR creation |
+| Done | PR merged | Auto (via `Fixes {PREFIX}-XX`) |
 
 ---
 
