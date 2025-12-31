@@ -3,14 +3,15 @@
 Hook: Check Linear workflow environment configuration.
 Runs on: UserPromptSubmit, PreToolUse (Write|Edit|ExitPlanMode)
 
-Validates LINEAR_WORKFLOW_TEAM and LINEAR_WORKFLOW_PROJECT are configured.
+Validates LINEAR_WORKFLOW_TEAM (required) and LINEAR_WORKFLOW_PROJECT (optional).
 Uses session caching to warn only once per session.
 
 Exit codes:
 - 0: Always allow (this is advisory, not blocking)
 
 Output:
-- Prints warning message if env vars are missing (once per session)
+- Prints warning message if required env vars are missing (once per session)
+- Prints info message if optional env vars are missing
 """
 import json
 import os
@@ -42,14 +43,21 @@ def save_session_state(state_path: Path, state: dict) -> None:
         json.dump(state, f)
 
 
-def check_linear_config() -> tuple[bool, list[str]]:
-    """Check if Linear workflow environment variables are configured."""
-    missing = []
+def check_linear_config() -> tuple[bool, list[str], list[str]]:
+    """Check if Linear workflow environment variables are configured.
+
+    Returns:
+        (is_configured, missing_required, missing_optional)
+    """
+    missing_required = []
+    missing_optional = []
+
     if not os.environ.get("LINEAR_WORKFLOW_TEAM"):
-        missing.append("LINEAR_WORKFLOW_TEAM")
+        missing_required.append("LINEAR_WORKFLOW_TEAM")
     if not os.environ.get("LINEAR_WORKFLOW_PROJECT"):
-        missing.append("LINEAR_WORKFLOW_PROJECT")
-    return len(missing) == 0, missing
+        missing_optional.append("LINEAR_WORKFLOW_PROJECT")
+
+    return len(missing_required) == 0, missing_required, missing_optional
 
 
 def main() -> None:
@@ -69,29 +77,30 @@ def main() -> None:
         # Already warned this session -> skip
         sys.exit(0)
 
-    configured, missing = check_linear_config()
+    configured, missing_required, missing_optional = check_linear_config()
 
     if not configured:
+        # Required env vars missing - show warning
         warning_message = (
             "⚠️ Linear workflow environment not configured.\n\n"
-            f"Missing: {', '.join(missing)}\n\n"
+            f"Missing (required): {', '.join(missing_required)}\n\n"
             "To enable Linear-tracked development, add to .claude/settings.json:\n"
             '{\n'
             '  "env": {\n'
             '    "LINEAR_WORKFLOW_TEAM": "YourTeam",\n'
-            '    "LINEAR_WORKFLOW_PROJECT": "YourProject"\n'
+            '    "LINEAR_WORKFLOW_PROJECT": "YourProject"  // optional\n'
             '  }\n'
             '}\n\n'
-            "Use Linear MCP to find your team/project:\n"
-            "  mcp__linear-server__list_teams()\n"
-            "  mcp__linear-server__list_projects(teamId: ...)"
+            "Use Linear MCP to find your team:\n"
+            "  mcp__linear-server__list_teams()"
         )
         output = {
             "systemMessage": warning_message,
             "hookSpecificOutput": {
                 "hookEventName": "PreToolUse",
                 "linearWorkflowWarning": True,
-                "missingVars": missing,
+                "missingRequired": missing_required,
+                "missingOptional": missing_optional,
             }
         }
         print(json.dumps(output))
@@ -101,11 +110,11 @@ def main() -> None:
             state_path,
             {
                 "warned": True,
-                "missing": missing,
+                "missing_required": missing_required,
+                "missing_optional": missing_optional,
                 "warned_at": datetime.now(timezone.utc).isoformat(),
             },
         )
-
     # Always exit 0 - this is advisory, not blocking
     sys.exit(0)
 

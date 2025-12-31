@@ -34,7 +34,7 @@ A Claude Code plugin that enforces Linear issue-tracked development workflow wit
 
 ## Configuration
 
-Add your Linear team and project to `.claude/settings.json`:
+Add your Linear team to `.claude/settings.json`:
 
 ```json
 {
@@ -45,7 +45,12 @@ Add your Linear team and project to `.claude/settings.json`:
 }
 ```
 
-If no config exists, the plugin will block implementation and guide you to set it up.
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `LINEAR_WORKFLOW_TEAM` | Yes | Your Linear team name |
+| `LINEAR_WORKFLOW_PROJECT` | No | Project for new issues (Backlog if omitted) |
+
+If `LINEAR_WORKFLOW_TEAM` is not configured, the plugin will block implementation and guide you to set it up.
 
 ## Workflow Overview
 

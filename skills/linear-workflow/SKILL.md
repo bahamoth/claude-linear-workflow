@@ -119,10 +119,13 @@ After planning, before implementation, create Linear issue using this template:
 mcp__linear-server__create_issue(
   title: "Concise work title",
   description: "<issue description template below>",
-  team: "{LINEAR_WORKFLOW_TEAM}",
-  project: "{LINEAR_WORKFLOW_PROJECT}"
+  team: "{LINEAR_WORKFLOW_TEAM}"
 )
 ```
+
+**If LINEAR_WORKFLOW_PROJECT is configured**: Add `project: "{LINEAR_WORKFLOW_PROJECT}"` parameter.
+
+> Issues without a project are created in the team's Backlog.
 
 ### Issue Description Template
 
