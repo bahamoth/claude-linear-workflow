@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.4](https://github.com/bahamoth/claude-linear-workflow/compare/v1.2.3...v1.2.4) (2025-12-31)
+
+
+### Code Refactoring
+
+* split required/optional Linear env checks and update docs ([677f417](https://github.com/bahamoth/claude-linear-workflow/commit/677f41758e8b03b4f70a8eff089361f864ad9a3b))
+
 ## [1.2.3](https://github.com/bahamoth/claude-linear-workflow/compare/v1.2.2...v1.2.3) (2025-12-31)
 
 
