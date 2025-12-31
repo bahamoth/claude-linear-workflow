@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/bahamoth/claude-linear-workflow/compare/v1.2.2...v1.2.3) (2025-12-31)
+
+
+### Documentation
+
+* update branch naming and validation guidance for Linear workflow ([71b7c9f](https://github.com/bahamoth/claude-linear-workflow/commit/71b7c9f11eb4c33110ea693a235e99c620d79645))
+
 ## [1.2.2](https://github.com/bahamoth/claude-linear-workflow/compare/v1.2.1...v1.2.2) (2025-12-31)
 
 
