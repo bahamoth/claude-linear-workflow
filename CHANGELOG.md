@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/bahamoth/claude-linear-workflow/compare/v1.2.1...v1.2.2) (2025-12-31)
+
+
+### Code Refactoring
+
+* migrate MCP calls to server endpoints and rename hooks ([e59cfc3](https://github.com/bahamoth/claude-linear-workflow/commit/e59cfc371ccbec5b57040cda34802630b0acbcbf))
+
 ## [1.2.1](https://github.com/bahamoth/claude-linear-workflow/compare/v1.2.0...v1.2.1) (2025-12-30)
 
 
